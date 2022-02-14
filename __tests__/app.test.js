@@ -29,6 +29,49 @@ describe('app', () => {
       });
     });
   });
+  describe('/api/articles', () => {
+    describe('GET', () => {
+      test('status: 200 - responds with an array of article objects', () => {
+        return request(app)
+          .get('/api/articles')
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            expect(articles).toHaveLength(12);
+            articles.forEach((article) => {
+              expect(article).toEqual(
+                expect.objectContaining({
+                  article_id: expect.any(Number),
+                  title: expect.any(String),
+                  topic: expect.any(String),
+                  author: expect.any(String),
+                  body: expect.any(String),
+                  created_at: expect.any(String),
+                  votes: expect.any(Number),
+                })
+              );
+            });
+          });
+      });
+      test('status: 200 - articles sorted by created_at descening by default', () => {
+        return request(app)
+          .get('/api/articles')
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            expect(articles).toBeSortedBy('created_at', { descending: true });
+          });
+      });
+      test('status: 200 - each article contains a comment_count property', () => {
+        return request(app)
+          .get('/api/articles')
+          .expect(200)
+          .then(({ body: { articles } }) => {
+            articles.forEach((article) => {
+              expect(typeof article.comment_count).toBe('number');
+            });
+          });
+      });
+    });
+  });
   describe('/api/articles/:article_id', () => {
     describe('GET', () => {
       test('status: 200 - responds with an article object', () => {
@@ -47,6 +90,22 @@ describe('app', () => {
                 votes: 100,
               })
             );
+          });
+      });
+      test('status: 200 - article includes a comment_count property', () => {
+        return request(app)
+          .get('/api/articles/1')
+          .expect(200)
+          .then(({ body: { article } }) => {
+            expect(article.comment_count).toBe(11);
+          });
+      });
+      test('status: 200 - accounts for no comments associated with article', () => {
+        return request(app)
+          .get('/api/articles/2')
+          .expect(200)
+          .then(({ body: { article } }) => {
+            expect(article.comment_count).toBe(0);
           });
       });
       test('status: 404 - valid but non existent article_id', () => {
@@ -169,6 +228,74 @@ describe('app', () => {
       });
     });
   });
+  describe('/api/articles/:article_id/comments', () => {
+    describe('GET', () => {
+      test('status: 200 - responds with an array of comments for the specified article_id', () => {
+        return request(app)
+          .get('/api/articles/1/comments')
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            expect(comments).toHaveLength(11);
+            comments.forEach((comment) => {
+              expect(comment).toEqual(
+                expect.objectContaining({
+                  comment_id: expect.any(Number),
+                  body: expect.any(String),
+                  votes: expect.any(Number),
+                  author: expect.any(String),
+                  article_id: 1,
+                  created_at: expect.any(String),
+                })
+              );
+            });
+          });
+      });
+      test('status: 200 - accounts for no comments associated with specified article_id', () => {
+        return request(app)
+          .get('/api/articles/2/comments')
+          .expect(200)
+          .then(({ body: { comments } }) => {
+            expect(comments).toEqual([]);
+          });
+      });
+      test('status: 404 - valid but non existent article_id', () => {
+        return request(app)
+          .get('/api/articles/9999999/comments')
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe('Article not found');
+          });
+      });
+      test('status: 400 - invalid article_id', () => {
+        return request(app)
+          .get('/api/articles/pigeons/comments')
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe('Bad request');
+          });
+      });
+    });
+  });
+  describe('/api/users', () => {
+    describe('GET', () => {
+      test('status: 200 - responds with an array of user objects', () => {
+        return request(app)
+          .get('/api/users')
+          .expect(200)
+          .then(({ body: { users } }) => {
+            expect(users).toHaveLength(4);
+            users.forEach((user) => {
+              expect(user).toEqual(
+                expect.objectContaining({
+                  username: expect.any(String),
+                })
+              );
+            });
+          });
+      });
+    });
+  });
+
   test('status: 404 - path not found', () => {
     return request(app)
       .get('/api/random')
