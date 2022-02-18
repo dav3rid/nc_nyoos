@@ -1,0 +1,13 @@
+name: Test and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: echo 'Hello everyone from the pipeline!'
