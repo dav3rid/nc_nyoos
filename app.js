@@ -22,8 +22,6 @@ app.get('/greeting', (req, res, next) => {
   res.status(200).send({ msg: 'Hello everyone!' });
 });
 
-console.log(nonExistentVar);
-
 app.get('/api/topics', getTopics);
 
 app.get('/api/articles', getArticles);
