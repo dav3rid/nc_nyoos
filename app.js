@@ -18,6 +18,10 @@ const app = express();
 
 app.use(express.json());
 
+app.get('/api/greeting', (req, res, next) => {
+  res.status(200).send({ msg: 'hello!' });
+});
+
 app.get('/api/topics', getTopics);
 
 app.get('/api/articles', getArticles);
