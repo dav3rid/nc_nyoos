@@ -10,6 +10,8 @@ const {
 
 const app = express();
 
+console.log(hello);
+
 app.use(cors());
 app.use(express.static('public'));
 app.use(express.json());
