@@ -10,15 +10,13 @@ const {
 
 const app = express();
 
-console.log(hello);
-
 app.use(cors());
 app.use(express.static('public'));
 app.use(express.json());
 
 app.use('/api', apiRouter);
 
-app.get('/hello', (req, res) => res.send({ msg: 'HELLO' }));
+app.get('/hello', (req, res) => res.send({ msg: 'HEY THERE FOLKS!' }));
 
 app.all('/*', routeNotFound);
 
