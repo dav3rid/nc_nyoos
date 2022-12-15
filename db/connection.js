@@ -10,4 +10,4 @@ if (!process.env.PGDATABASE) {
   throw new Error('PGDATABASE not set');
 }
 
-module.exports = new Pool({ connectionString: process.env.PGDATABASE });
+module.exports = new Pool({ connectionString: process.env.PGDATABASE, max: 2 });
