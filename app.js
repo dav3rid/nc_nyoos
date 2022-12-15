@@ -16,6 +16,10 @@ app.use(express.json());
 
 app.use('/api', apiRouter);
 
+app.get('/api/hello', (req, res, next) => {
+  res.status(200).send({ msg: 'Hello everyone!' });
+});
+
 app.all('/*', routeNotFound);
 
 app.use(handleSQLErrors);
