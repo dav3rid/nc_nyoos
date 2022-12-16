@@ -8,6 +8,8 @@ const {
   handle500,
 } = require('./errors');
 
+console.log(process.platform, '<< platform');
+
 const app = express();
 
 app.use(cors());
