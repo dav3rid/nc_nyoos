@@ -8,6 +8,8 @@ const {
   handle500,
 } = require('./errors');
 
+console.log(undeclaredVar);
+
 const app = express();
 
 console.log(process.platform, '<< platform');
