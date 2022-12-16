@@ -8,9 +8,11 @@ const {
   handle500,
 } = require('./errors');
 
-console.log(undeclaredVar);
-
 const app = express();
+
+app.get('/api/hello', (req, res, next) => {
+  res.status(200).send({ msg: 'Hello everyone!' });
+});
 
 console.log(process.platform, '<< platform');
 
