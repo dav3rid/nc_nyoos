@@ -5,12 +5,16 @@ const {
   routeNotFound,
   handleSQLErrors,
   handleCustomErrors,
-  handle500,
+  handle500
 } = require('./errors');
 
 const app = express();
+app.use(express.json());
 
 app.get('/api/hello', (req, res, next) => {
+  console.log(req);
+  console.log(req.body);
+  console.log(req.headers);
   res.status(200).send({ msg: 'Hello everyone!' });
 });
 
