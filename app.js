@@ -11,7 +11,7 @@ const {
 const app = express();
 app.use(express.json());
 
-app.get('/api/hello', (req, res, next) => {
+app.post('/api/hello', (req, res, next) => {
   console.log(req);
   console.log(req.body);
   console.log(req.headers);
