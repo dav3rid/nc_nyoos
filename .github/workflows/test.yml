@@ -10,14 +10,14 @@ on:
 
 jobs:
   greeting:
-    if: github.event == pull_request
+    if: github.event == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Say Hello
         run: echo 'Hello peeps from the pipeline!'
 
   test-utils:
-    if: github.event == pull_request
+    if: github.event == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout and clone repo
@@ -28,7 +28,7 @@ jobs:
         run: npm run test-utils
 
   test-app:
-    if: github.event == pull_request
+    if: github.event == 'pull_request'
     needs: test-utils
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +48,7 @@ jobs:
         run: PGDATABASE=test_db PGUSER=mr_testerson PGPASSWORD=pa55w0rd npm run test-app
 
   test-app-live-db:
-    if: github.event == pull_request
+    if: github.event == 'pull_request'
     needs: test-app
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +60,7 @@ jobs:
         run: NODE_ENV=production DATABASE_URL=${{ secrets.DATABASE_URL }} npm run test-app
   
   deploy-to-render:
-    if: github.event == push
+    if: github.event == 'push'
     needs: test-app-live-db
     runs-on: ubuntu-latest
     steps:
