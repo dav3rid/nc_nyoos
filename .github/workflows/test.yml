@@ -61,7 +61,6 @@ jobs:
   
   deploy-to-render:
     if: github.event == 'push'
-    needs: test-app-live-db
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Render
