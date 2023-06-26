@@ -11,6 +11,10 @@ const {
 const app = express();
 app.use(express.json());
 
+app.get('/test', (req, res) => {
+  res.send({msg: 'has worked and ting'})
+})
+
 app.post('/api/hello', (req, res, next) => {
   console.log(req);
   console.log(req.body);
