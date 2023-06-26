@@ -8,6 +8,8 @@ const {
   handle500
 } = require('./errors');
 
+// stuff
+
 const app = express();
 app.use(express.json());
 
